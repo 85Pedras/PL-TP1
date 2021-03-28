@@ -1,46 +1,46 @@
 import sys
 import re
 
-def pertence(elem,lista):
-    for x in lista:
-        if x == elem:
-            return True
-    return False
+def auxOrd(elem):
+    return elem[1]
 
 def delete(lista,x):
-    while pertence(x,lista):
+    while (x in lista):
         lista.remove(x)
 
-nomes = []
-apelidos = []
 f = open ("processos.xml",encoding="utf8")
 conteudo = f.read()
-processos = re.findall(r'<processo id.+\n.+\n.+\n.+<nome>((\w+).* (\w+))<\/nome>\n.+\n.+\n.+\n.+<\/processo>',conteudo)
-#for p in processos:
-#    ps.append(list(p))
 
-auxprocessos = processos
-for elem in auxprocessos:
-    n = elem[1]
-    a = elem[2]
-    nomes.append(n)
-    apelidos.append(a)
+nomes = re.findall(r'<nome>(\w+).* \w+<\/nome>',conteudo)
+apelidos = re.findall(r'<nome>\w+.* (\w+)<\/nome>',conteudo)
 
 nomesOrd = []
-apelidosOrd = []
+apelidosOrd = dict()
 
-for nome in nomes:
-    k = nomes.count(nome)
-    nomesOrd.append([nome,k])
-    delete(nomes,nome)
+#for nome in nomes:
+    #k = nomes.count(nome)
+    #nomesOrd.append([nome,k])
+    #delete(nomes,nome)
+
+#nomesOrd.sort(key=auxOrd,reverse=True)
 
 for apelido in apelidos:
-    k = apelidos.count(apelido)
-    apelidosOrd.append([apelido,k])
-    delete(apelidos,apelido)
+    if (apelido in apelidosOrd):
+        apelidosOrd[apelido] += 1
+    else:
+        apelidosOrd[apelido] = 1
 
-print(nomesOrd)
+    #x = apelidos.count(apelido)
+    #apelidosOrd.append([apelido,x])
+    #delete(apelidos,apelido)
 
+#apelidosOrd.sort(key=auxOrd,reverse=True)
 
+#print(nomesOrd)
+
+#print(apelidosOrd)
+
+for elem in sorted(apelidosOrd,key=apelidosOrd.get,reverse=True):
+    print(elem,apelidosOrd[elem])
 
 
