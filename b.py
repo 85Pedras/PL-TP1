@@ -84,6 +84,5 @@ for s in sorted(seculos):
     print("Nomes século: ",s," ->",nomesOrdSec[:5])
     apelidosOrdSec = sorted(apelidosOrdSec.items(),key=lambda x: x[1],reverse=True)
     print("Apelidos século: ",s," ->",apelidosOrdSec[:5])
-    print("\n
-    ")
+    print("\n")
     
