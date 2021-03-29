@@ -45,12 +45,12 @@ for elem in anos:
         sec = int(res[1])
         if (sec in seculos) == False:
             seculos.append(sec)
-            
+
     elif res := re.match(r'(\d+)\d{2}',elem):
         sec = int(res[1])+1
         if (sec in seculos) == False:
             seculos.append(sec)
-            
+
 print(seculos)
 print(f'Número de séculos analisados: {len(seculos)}')
 f.close()
