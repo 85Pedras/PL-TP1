@@ -33,13 +33,11 @@ for mae in range(len(mae_repetida)):
 print(f'Existem {len(mae_repetida)} mães que têm mais do que um filho candidato.')
 
 # Verificar se uma mãe tem mais do que um filho candidato
-while True:
-    mae = str(input("Insira o nome de uma mãe: "))
+while (mae := input("Insira o nome de uma mãe (quit para sair): "))!="quit":
     i = 0
     for i in range(len(mae_repetida)):
         if mae_repetida[i] == mae:
             print(f'A mãe {mae_repetida[i]} tem mais do que um fiho candidato.')
-
 
 #PAIS
 # Lista de pais
@@ -61,8 +59,7 @@ for pai in range(len(pai_repetido)):
 print(f'Existem {len(pai_repetido)} pais que têm mais do que um filho candidato.')
 
 # Verificar se uma mãe tem mais do que um filho candidato
-while True:
-    pai = str(input("Insira o nome de um pai: "))
+while (pai := input("Insira o nome de um pai (quit para sair): "))!="quit":
     i = 0
     for i in range(len(pai_repetido)):
         if pai_repetido[i] == pai:
