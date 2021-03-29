@@ -51,7 +51,7 @@ for elem in anos.keys():
         sec = int(res[1])
         if (sec in seculos) == False:
             seculos.append(sec)
-            
+
     elif res := re.match(r'(\d+)\d{2}',elem):
         sec = int(res[1])+1
         if (sec in seculos) == False:
