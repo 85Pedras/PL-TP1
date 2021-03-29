@@ -15,10 +15,16 @@ conteudo = f.read()
 
 
 #Número de processos por ano
-anos = re.findall(r'<data>(\d{4})-\d{2}-\d{2}<\/data>',conteudo)
-#for elem in anos:
-#    print(f'Número de processos no ano {elem} = {anos.count(elem)}')
-#    delete(anos,elem)
+auxanos = re.findall(r'<data>(\d{4})-\d{2}-\d{2}<\/data>',conteudo)
+anos = dict()
+for elem in auxanos:
+    if elem in anos:
+        anos[elem] += 1
+    else:
+        anos[elem] = 1
+
+for elem in sorted(anos,key=anos.__hash__):
+    print("Número de processos no ano ", elem, ": ", anos[elem])
 
 
 
@@ -40,7 +46,7 @@ print(f'Intervalo de datas: {data_inicial} <=> {data_final}')
 
 #Número de séculos
 seculos = []
-for elem in anos:
+for elem in anos.keys():
     if res := re.match(r'(\d+)00',elem):
         sec = int(res[1])
         if (sec in seculos) == False:
@@ -51,6 +57,6 @@ for elem in anos:
         if (sec in seculos) == False:
             seculos.append(sec)
             
-print(seculos)
+print(sorted(seculos))
 print(f'Número de séculos analisados: {len(seculos)}')
 f.close()
