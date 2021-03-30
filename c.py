@@ -8,10 +8,10 @@ parentesDict = dict()
 # Definições auxiliares
 def parentes(lista):
     for elem in lista:
-        obs = elem[3]
+        obs = elem[2]
         parentes = re.findall(r',((?i:Irmao)|(?i:Tio)|(?i:Primo)).+?\.',obs)
         if(len(parentes) > 0):
-            candidatos.add(elem[1])
+            candidatos.add(elem[0])
             for parente in parentes:
                 if parentesDict.get(parente):
                     parentesDict[parente] += 1
@@ -38,11 +38,12 @@ def maisFrequente(dict):
 processos = open("processos.xml",encoding="utf8")
 conteudo = processos.read()
 
-#Número de candidatos com parentes eclesiásticos
-if res := re.findall(r'<processo\s(.|\n)+?<nome>([\w\s]+)<\/nome>(.|\n)+?<obs>(.*?)<\/obs>(.|\n)+?<\/processo>',conteudo):
+if res := re.findall(r'<nome>([\w\s]+)<\/nome>(.|\n)+?<obs>(.*?)<\/obs>',conteudo):
     parentes(res)
     maisFrequente(parentesDict)
 else:
     print("Erro")
+
+processos.close()
 
 
