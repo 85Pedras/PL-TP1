@@ -15,7 +15,7 @@ conteudo = f.read()
 
 #MÃES
 # Lista de mães
-maes = re.findall(r'<mae>(.*)<\/mae>',conteudo)
+maes = re.findall(r'<mae>([\w\ ]*),?[\w]*<\/mae>',conteudo)
 
 # Lista de mães ordenadas
 maes_ord = sorted(maes)
@@ -41,7 +41,7 @@ while (mae := input("Insira o nome de uma mãe (quit para sair): "))!="quit":
 
 #PAIS
 # Lista de pais
-pais = re.findall(r'<pai>(.*)<\/pai>',conteudo)
+pais = re.findall(r'<pai>([\w\ ]*),?[\w]*<\/pai>',conteudo)
 
 # Lista de pais ordenados
 pais_ord = sorted(pais)
