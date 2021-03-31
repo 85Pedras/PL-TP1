@@ -1,7 +1,7 @@
 from graphviz import Graph 
 import re
 
-ids = set() #todos os ids dos processos já encontrados
+ids = set() #todos os ids dos processos ja encontrados
 
 def lerDados(dados,ano):
     lista = []
@@ -20,7 +20,7 @@ def lerDados(dados,ano):
         lista.append("?")
 
     else:
-        res = re.search(r'<pai>([\w\s]+)<\/pai>',dados).group(1)
+        res = re.search(r'<pai>([\w\s]+),?.*<\/pai>',dados).group(1)
         if(res):
             lista.append(res)
 
@@ -29,7 +29,7 @@ def lerDados(dados,ano):
         lista.append("?")
 
     else:
-        res = re.search(r'<mae>([\w\s]+)<\/mae>',dados).group(1)
+        res = re.search(r'<mae>([\w\s]+),?.*<\/mae>',dados).group(1)
         if(res):
             lista.append(res)
 
@@ -45,7 +45,7 @@ def procurarDados(conteudo, ano):
             if(not idProcesso in ids):
                 ids.add(idProcesso)
                 lista = lerDados(dados,ano)
-                if(len(lista) > 0): #Construção da arvore genealogica
+                if(len(lista) > 0): #Construcao da arvore genealogica
                     count = count + 1
                     countStr = str(count)
                     dot.attr('node', shape='box')
