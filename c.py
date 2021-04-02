@@ -4,22 +4,31 @@ import re
 # Estruturas intermédias
 candidatos = set()
 parentesDict = dict()
+idsProcessos = set()
 
 # Definições auxiliares
+def contaParente(parentes):
+    for parente in parentes:
+        if parentesDict.get(parente):
+            parentesDict[parente] += 1
+        else:
+            parentesDict[parente] = 1
+
 def parentes(lista):
-    for elem in lista:
-        obs = elem[3]
-        parentes = re.findall(r',((?i:Irmao)|(?i:Tio)|(?i:Primo)).+?\.',obs)
-        if(len(parentes) > 0):
-            candidatos.add(elem[1])
-            for parente in parentes:
-                if parentesDict.get(parente):
-                    parentesDict[parente] += 1
-                else:
-                    parentesDict[parente] = 1  
+    for (idP,_,nome,_,obs) in lista:
+        if(idP in idsProcessos):
+            pass
+        else:
+            idsProcessos.add(idP);
+            parentes = re.findall(r',((?i:Irmao)|(?i:Tio)|(?i:Primo)).*?\.',obs)
+            if(len(parentes) > 0):
+                candidatos.add(nome)
+                contaParente(parentes)  
+            else:
+                pass
         
     print("Número de parentes: ",parentesDict)
-    print("Número total de candidatos com parentes eclesiasticos: ",len(candidatos))
+    print("Número total de candidatos (diferentes) com parentes eclesiasticos (irmao, tio ou primo): ",len(candidatos))
 
 def maisFrequente(dict):
     keys = dict.keys()
@@ -33,16 +42,18 @@ def maisFrequente(dict):
     print("O parente eclesiastico mais frequente é o:",maxKey)
 
 
+# FLUXO PRINCIPAL DO PROGRAMA
 
 #Ler todo o conteúdo do xml
 processos = open("processos.xml",encoding="utf8")
 conteudo = processos.read()
 
-#Número de candidatos com parentes eclesiásticos
-if res := re.findall(r'<processo\s(.|\n)+?<nome>([\w\s]+)<\/nome>(.|\n)+?<obs>(.*?)<\/obs>(.|\n)+?<\/processo>',conteudo):
+if res := re.findall(r'<processo id="(\d+)">(.|\n)*?<nome>([\w\s]+)<\/nome>(.|\n)*?<obs>(.*?)<\/obs>',conteudo):
     parentes(res)
     maisFrequente(parentesDict)
 else:
-    print("Erro")
+    pass
+
+processos.close()
 
 
