@@ -15,7 +15,7 @@ conteudo = f.read()
 
 #MÃES
 # Lista de mães
-maes = re.findall(r'<mae>([\w\ ]*),?[\w]*<\/mae>',conteudo)
+maes = re.findall(r'<mae>([\w\ ]*),?[\w\ ]*<\/mae>',conteudo)
 
 # Lista de mães ordenadas
 maes_ord = sorted(maes)
@@ -34,10 +34,15 @@ print(f'Existem {len(mae_repetida)} mães que têm mais do que um filho candidat
 
 # Verificar se uma mãe tem mais do que um filho candidato
 while (mae := input("Insira o nome de uma mãe (quit para sair): "))!="quit":
-    i = 0
+    flag = False
     for i in range(len(mae_repetida)):
         if mae_repetida[i] == mae:
-            print(f'A mãe {mae_repetida[i]} tem mais do que um fiho candidato.')
+            print(f'A mãe {mae} tem mais do que um fiho candidato.')
+            flag = True
+    if not flag:
+        print(f'A mãe {mae} não tem mais do que um fiho candidato.')
+
+
 
 #PAIS
 # Lista de pais
@@ -60,10 +65,13 @@ print(f'Existem {len(pai_repetido)} pais que têm mais do que um filho candidato
 
 # Verificar se uma mãe tem mais do que um filho candidato
 while (pai := input("Insira o nome de um pai (quit para sair): "))!="quit":
-    i = 0
+    flag = False
     for i in range(len(pai_repetido)):
         if pai_repetido[i] == pai:
-            print(f'O pai {pai_repetido[i]} tem mais do que um fiho candidato.')
+            print(f'O pai {pai} tem mais do que um fiho candidato.')
+            flag = True
+    if not flag:
+        print(f'O pai {pai} não tem mais do que um fiho candidato.')
 
 
 f.close()
