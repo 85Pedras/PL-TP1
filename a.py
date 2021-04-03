@@ -1,10 +1,6 @@
 import sys
 import re
 
-def delete(lista,x):
-    while (x in lista):
-        lista.remove(x)
-
 def auxOrd(elem):
     return elem[1]
 
@@ -15,31 +11,43 @@ conteudo = f.read()
 
 
 #Número de processos por ano
-auxanos = re.findall(r'<data>(\d{4})-\d{2}-\d{2}<\/data>',conteudo)
+auxanos = re.findall(r'<processo id="(\d+)">\n.+\n.+<data>(\d{4})-\d{2}-\d{2}<\/data>',conteudo)
 anos = dict()
 for elem in auxanos:
-    if elem in anos:
-        anos[elem] += 1
+    if elem[1] in anos:
+        anos[elem[1]].add(elem[0])
     else:
-        anos[elem] = 1
+        anos[elem[1]] = set()
+        anos[elem[1]].add(elem[0])
 
 for elem in sorted(anos,key=anos.__hash__):
-    print("Número de processos no ano ", elem, ": ", anos[elem])
+    print("Número de processos no ano ", elem, ": ", len(anos[elem]))
 
 
 
 #Lista de processos por ordem cronologica
-processos = re.findall(r'<processo id="(\d+)">\n.+\n.+<data>(\d{4}\-\d{2}\-\d{2})<\/data>\n.+\n.+\n.+\n.+\n.+<\/processo>', conteudo)
-processos.sort(key=auxOrd)
-#print("Processos ordenados: ")
-#for elem in processos:
-#    print(elem[0])
-
+auxprocessos = re.findall(r'<processo id="(\d+)">\n.+\n.+<data>((\d{4})\-\d{2}\-\d{2})<\/data>\n.+\n.+\n.+\n.+\n.+<\/processo>', conteudo)
+processos = set()
+for elem in auxprocessos:
+    processos.add(elem)
+list(processos).sort(key=auxOrd)
+k = int(input("Ver processos ordenados cronologicamente por ano (1), todos (2) ou continuar (0)? >> "))
+while (k == 1 or k == 2):
+    if k == 1:
+        a = input("Introduza o ano >> ")
+        print("Processos ordenados cronologicamente do ano",a,": ")
+        for elem in processos:
+            if elem[2] == a:
+                print("Processo: ", elem[0])
+    else:
+        for elem in processos:
+            print("Processo: ", elem[0])
+    k = int(input("Ver processos ordenados por ano (1), todos (2) ou continuar (0)? >> "))
 
 
 #Intervalo de datas
-data_inicial = (processos[0][1])
-data_final = (processos[len(processos)-1][1])
+data_inicial = sorted(list(processos),key=auxOrd)[0][1]
+data_final = sorted(list(processos),key=auxOrd)[len(processos)-1][1]
 
 print(f'Intervalo de datas: {data_inicial} <=> {data_final}')
 
@@ -57,6 +65,6 @@ for elem in anos.keys():
         if (sec in seculos) == False:
             seculos.append(sec)
             
-print(sorted(seculos))
+print("Séculos: ", sorted(seculos))
 print(f'Número de séculos analisados: {len(seculos)}')
 f.close()
