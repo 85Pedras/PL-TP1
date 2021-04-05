@@ -10,34 +10,38 @@ def lerDados(dados,ano):
         lista.append(res)
     else:
         return lista
-    
-    res = re.search(r'<nome>([\w\s]+)<\/nome>',dados).group(1)
+
+    res = re.search(r'<nome\/>',dados)
     if(res):
-        lista.append(res)
+        lista.append("?")
+    
+    res = re.search(r'<nome>([\w\s]+)<\/nome>',dados)
+    if(res):
+        lista.append(res.group(1))
 
     res = re.search(r'<pai\/>',dados)
     if(res):
         lista.append("?")
 
     else:
-        res = re.search(r'<pai>([\w\s]+),?.*<\/pai>',dados).group(1)
+        res = re.search(r'<pai>([\w\s]+),?.*<\/pai>',dados)
         if(res):
-            lista.append(res)
+            lista.append(res.group(1))
 
     res = re.search(r'<mae\/>',dados)
     if(res):
         lista.append("?")
 
     else:
-        res = re.search(r'<mae>([\w\s]+),?.*<\/mae>',dados).group(1)
+        res = re.search(r'<mae>([\w\s]+),?.*<\/mae>',dados)
         if(res):
-            lista.append(res)
+            lista.append(res.group(1))
 
     return lista
     
 
 def procurarDados(conteudo, ano):
-    dot = Graph(comment='Arvore genealogica')
+    dot = Graph(comment='Arvore genealogica', format='png')
     count = 0
     res = re.findall(r'<processo id="(\d+)">\n\s+(.+\n.+\n.+\n.+\n.+\n.+)\n.+<\/processo>',conteudo)
     if res:
@@ -49,9 +53,18 @@ def procurarDados(conteudo, ano):
                     count = count + 1
                     countStr = str(count)
                     dot.attr('node', shape='box')
-                    mae = lista[3] + " (mae)"
-                    pai = lista[2] + " (pai)"
-                    filho = lista[1] + " (filho)"
+                    if(len(lista) > 3):
+                        mae = lista[3] + " (mae)"
+                    else:
+                        mae = "?"
+                    if(len(lista) > 2):
+                        pai = lista[2] + " (pai)"
+                    else:
+                        pai = "?"
+                    if(len(lista) > 1):
+                        filho = lista[1] + " (filho)"
+                    else:
+                        filho = "?"
                     dot.node(mae,mae)
                     dot.node(pai,pai)
                     dot.node(filho,filho)
@@ -75,3 +88,4 @@ f = open("processos.xml")
 conteudo = f.read() #Ler tudo
 ano = int(input("Introduza o ano >> "))
 procurarDados(conteudo, ano)
+f.close()

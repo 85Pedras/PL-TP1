@@ -1,12 +1,12 @@
 import sys
 import re
 
-# Estruturas intermédias
+# Estruturas intermedias
 candidatos = set()
 parentesDict = dict()
 idsProcessos = set()
 
-# Definições auxiliares
+# Definicoes auxiliares
 def contaParente(parentes):
     for parente in parentes:
         if parentesDict.get(parente):
@@ -27,8 +27,8 @@ def parentes(lista):
             else:
                 pass
         
-    print("Número de parentes: ",parentesDict)
-    print("Número total de candidatos (diferentes) com parentes eclesiasticos (irmao, tio ou primo): ",len(candidatos))
+    print("Numero de parentes: ",parentesDict)
+    print("Numero total de candidatos (diferentes) com parentes eclesiasticos (irmao, tio ou primo): ",len(candidatos))
 
 def maisFrequente(dict):
     keys = dict.keys()
@@ -39,12 +39,12 @@ def maisFrequente(dict):
             max = dict[key]
             maxKey = key
 
-    print("O parente eclesiastico mais frequente é o:",maxKey)
+    print("O parente eclesiastico mais frequente e o:",maxKey)
 
 
 # FLUXO PRINCIPAL DO PROGRAMA
 
-#Ler todo o conteúdo do xml
+#Ler todo o conteudo do xml
 processos = open("processos.xml",encoding="utf8")
 conteudo = processos.read()
 
